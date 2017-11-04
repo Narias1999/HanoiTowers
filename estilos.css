@@ -1,0 +1,46 @@
+.aro{
+			height: 3vh;
+			border-radius: 8px;
+			background: red;
+			position: absolute;
+		}
+		.container{
+			margin: 0 auto;
+			position: relative;
+			display: flex;
+			width: 80%;
+			height: 100vh;
+			justify-content: space-between;
+			align-items: center;
+		}
+		.tower{
+			margin: 0 auto;
+			height: 200px;
+			width: 20px;
+			border-top-left-radius: 10px;
+			border-top-right-radius: 10px;
+			background: #ccc;
+			border: 30px solid white;
+		}
+		#drag1{
+		    width: 18vw;
+		    left: 4vw;
+		    top: 62.4vh;
+		}
+		#drag2{
+			width: 16vw;
+			left: 5vw;
+			top: 59.4vh;
+			background: blue;
+		}
+		#drag3{
+			width: 14vw;
+			left: 6vw;
+			top: 56.4vh;
+			background: peru;
+		}
+		.bottom-center{
+			margin: 0 auto;
+			position: relative;
+			bottom: 35vh;
+		}
