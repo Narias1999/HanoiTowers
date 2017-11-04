@@ -1,32 +1,61 @@
 $(function () {
-  $('a').click(function(){
-    startGame();
-  })
-  $('#jugadas').html(jugadas)
+  for (let i = 1; i <= 8; i++) {
+    $(`#drag${i}`).data('data',{
+      value: i,
+      lastTower: $('#tower1')
+    })
+  }
   $('.aro').draggable({disabled: true})
 
-  $('#tower1').data('data',{
-    pos: 'left',
-    maxValue: 3,
-    jugadas: 0,
-    elements: [$("#drag1"),$('#drag2'),$('#drag3')]
+  $('#easy').click(function(){
+    $('#tower1').data('data',{
+      pos: 'left',
+      maxValue: 3,
+      elements: [$('#drag1'),$('#drag2'),$('#drag3')]
+    })
+    $('#drag4').css('display','none')
+    $('#drag5').css('display','none')
+    $('#drag6').css('display','none')
+    $('#drag7').css('display','none')
+    $('#drag8').css('display','none')
+    startGame('easy');
   })
+  $('#medium').click(function(){
+    $('#tower1').data('data',{
+      pos: 'left',
+      maxValue: 5,
+      elements: [$('#drag1'),$('#drag2'),$('#drag3'),$('#drag4'),$('#drag5')]
+    })
+    $('#drag6').css('display','none')
+    $('#drag7').css('display','none')
+    $('#drag8').css('display','none')
+    startGame('medium');
+  })
+  $('#hard').click(function(){
+    $('#tower1').data('data',{
+      pos: 'left',
+      maxValue: 5,
+      elements: [$('#drag1'),$('#drag2'),$('#drag3'),$('#drag4'),$('#drag5'),$('#drag6'),$('#drag7'),$('#drag8')]
+    })
+    startGame('hard');
+  })
+
 })
 
 function validarVictoria(level){
   if (level == 'easy') level = 3
-  else if(level == 'hard') level = 5
+  else if(level == 'medium') level = 5
   else level = 8
-  console.log(level)
   const elementsT2 = $('#tower2').data('data').elements.length
   const elementsT3 = $('#tower3').data('data').elements.length
-  console.log(elementsT2+ " "+ elementsT3)
   if (elementsT2 == level || elementsT3 == level) {
     alert('Ganaste!')
   }
 }
 
-function startGame(){
+function startGame(level){
+  let jugadas = 0
+  $('#jugadas').html(jugadas)
   $('#mainFace').css({
     transform: 'scale(0)',
     'border-radius':'50%'
@@ -37,38 +66,17 @@ function startGame(){
       'border-radius': 0
     })
   },400)
-  $('#drag1').data('data', {
-    value: 1,
-    status: false,
-    top: false,
-    lastTower: $('#tower1')
-  })
-  $('#drag2').data('data', {
-    value: 2,
-    status: false,
-    top: false,
-    lastTower: $('#tower1')
-  })
-  $('#drag3').data('data', {
-    value: 3,
-    status: false,
-    top: false,
-    lastTower: $('#tower1')
-  })
   $('#tower2').data('data',{
     pos: 'center',
     maxValue: 0,
-    jugadas: 0,
     elements: []
   })
   $('#tower3').data('data',{
     pos: 'right',
     maxValue: 0,
-    jugadas: 0,
     elements: []
   })
 
-  let jugadas = 0
   let elements = $('#tower1').data('data').elements
   elements[elements.length-1].draggable({disabled:false})
   $( ".tower" ).droppable({
@@ -114,16 +122,16 @@ function startGame(){
 
       let top = 65.4 - ($(this).data("data").elements.length * 3)
       top = `${top}vh`
-      let left = ""
+      let left
       let position = $(this).data('data').pos
       if (position == 'center') {
-        left = 29.4 + dragValue
+        left = 30 + dragValue
         left = `${left}vw`
       }else if (position == 'left') {
         left = 3 + dragValue
         left = `${left}vw`
       }else{
-        left = 56 + dragValue
+        left = 56.7 + dragValue
         left = `${left}vw`
       }
       ui.draggable.css({
@@ -133,7 +141,7 @@ function startGame(){
       })
       setTimeout(function(){
         ui.draggable.css({transition: "0s"})
-        validarVictoria('easy')
+        validarVictoria(level)
       }, 400)
     }
   })
