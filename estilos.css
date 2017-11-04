@@ -150,3 +150,22 @@ ul li{
 p span{
 	font-weight: 400;
 }
+#username{
+	margin-top: 40px;
+	margin-bottom: 20px;
+	border: 2px solid #2c3e50;
+	width: 20vw;
+	padding: 10px 10px;
+	text-align: center;
+	color: #000;
+	font-size: 16px;
+	outline: none;
+}
+#user{
+	position: absolute;
+    display: block;
+    width: 100%;
+    text-align: center;
+    top: 20vh;
+    color: #d35400;
+}

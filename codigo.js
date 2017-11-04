@@ -25,6 +25,10 @@ $(function () {
   })
 
   $('#start').click(function(){
+    if (!$('#username').val()) {
+      alert('Por favor ingrese un nombre de usuario valido')
+      return
+    }
     let lv
     if (level==1) {
       $('#tower1').data('data',{
@@ -76,6 +80,7 @@ function validarVictoria(level, control){
 }
 
 function startGame(level){
+  $('#user').html($('#username').val())
   let control = setInterval(cronometro,1000)
   let jugadas = 0
   $('#jugadas').html(jugadas)
