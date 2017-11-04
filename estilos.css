@@ -1,46 +1,136 @@
+*{
+	border-radius: border-box;
+	margin:0;
+	padding: :0;
+}
+body{
+	font-family: 'Arial';
+	color: #3498db;
+	background: #fcffff;
+}
+#mainFace{
+	position: absolute;
+	top: 0;
+	left: 0;
+	bottom: 0;
+	right: 0;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	text-align: center;
+	text-transform: uppercase;
+	transition: .4s;
+}
+p{
+	margin:20px 0;
+}
+ul{
+	padding: 0;
+	margin-top: 20px;
+}
+ul li{
+	display: inline-block;
+	margin: 0 15px;
+}
+ul li a{
+	text-decoration: none;
+	color: #3498db;
+	padding: 10px 20px;
+	border: 2px solid #3498db;
+	border-radius: 4px;
+	letter-spacing: 1px;
+	transition: .2s;
+}
+ul li a:hover{
+	background: #3498db;
+	color: #fff;
+}
+#game{
+	margin: 0 auto;
+	position: relative;
+	display: flex;
+	transform: scale(0);
+	border-radius: 50%;
+	transition: .4s;
+	width: 80%;
+	height: 100vh;
+	justify-content: space-between;
+	align-items: center;
+}
+.tower{
+	margin: 0 auto;
+	height: 200px;
+	width: 20px;
+	border-top-left-radius: 10px;
+	border-top-right-radius: 10px;
+	background: #ccc;
+	border: 10vw solid white;
+}
 .aro{
-			height: 3vh;
-			border-radius: 8px;
-			background: red;
-			position: absolute;
-		}
-		.container{
-			margin: 0 auto;
-			position: relative;
-			display: flex;
-			width: 80%;
-			height: 100vh;
-			justify-content: space-between;
-			align-items: center;
-		}
-		.tower{
-			margin: 0 auto;
-			height: 200px;
-			width: 20px;
-			border-top-left-radius: 10px;
-			border-top-right-radius: 10px;
-			background: #ccc;
-			border: 30px solid white;
-		}
-		#drag1{
-		    width: 18vw;
-		    left: 4vw;
-		    top: 62.4vh;
-		}
-		#drag2{
-			width: 16vw;
-			left: 5vw;
-			top: 59.4vh;
-			background: blue;
-		}
-		#drag3{
-			width: 14vw;
-			left: 6vw;
-			top: 56.4vh;
-			background: peru;
-		}
-		.bottom-center{
-			margin: 0 auto;
-			position: relative;
-			bottom: 35vh;
-		}
+	height: 3vh;
+	border-radius: 8px;
+	background: red;
+	position: absolute;
+}
+#drag1{
+    width: 18vw;
+    left: 4.3vw;
+    top: 62.4vh;
+}
+#drag2{
+	width: 16vw;
+	left: 5.3vw;
+	top: 59.4vh;
+	background: blue;
+}
+#drag3{
+	width: 14vw;
+	left: 6.3vw;
+	top: 56.4vh;
+	background: peru;
+}
+#drag4{
+	width: 12vw;
+	left: 7.3vw;
+	top: 53.4vh;
+	background: peru;
+}
+#drag5{
+	width: 10vw;
+	left: 8.3vw;
+	top: 50.4vh;
+	background: peru;
+}
+#drag6{
+	width: 8vw;
+	left: 9.3vw;
+	top: 47.4vh;
+	background: peru;
+}
+#drag7{
+	width: 6vw;
+	left: 10.3vw;
+	top: 44.4vh;
+	background: peru;
+}
+#drag8{
+	width: 4vw;
+	left: 11.3vw;
+	top: 41.4vh;
+	background: peru;
+}
+.bottom-center{
+	margin: 0 auto;
+	position: relative;
+	bottom: 35vh;
+}
+.points{
+	position: absolute;
+	top: 10vh;
+	left: 0;
+	font-weight: 600;
+}
+#jugadas{
+	font-weight: 400;
+}

@@ -1,4 +1,7 @@
 $(function () {
+$('a').click(function(){
+  startGame();
+})
 let jugadas = 0
 $('#jugadas').html(jugadas)
 $('.aro').draggable({disabled: true})
@@ -61,13 +64,10 @@ $( ".tower" ).droppable({
       $(this).data('data').elements.forEach(function(el){
         if (el[0] == ui.draggable[0]) estado = true
       })
-      console.log(estado)
       if (!estado) $(this).data("data").elements.push(ui.draggable)
 
       let lastTower = ui.draggable.data('data').lastTower
       let elements = lastTower.data('data').elements
-      console.log(lastTower)
-      console.log($(this))
       if (lastTower[0] != $(this)[0]){
         elements.pop()
       } 
@@ -90,27 +90,49 @@ $( ".tower" ).droppable({
     let left = ""
   	let position = $(this).data('data').pos
   	if (position == 'center') {
-  		left = 28.4 + dragValue
+  		left = 29.4 + dragValue
   		left = `${left}vw`
   	}else if (position == 'left') {
   		left = 3 + dragValue
   		left = `${left}vw`
   	}else{
-  		left = 55 + dragValue
+  		left = 56 + dragValue
   		left = `${left}vw`
   	}
   	ui.draggable.css({
   		top,
   		left,
   		transition: ".4s",
-  	})
+    })
     setTimeout(function(){
-  	  ui.draggable.css({transition: "0s"})
+      ui.draggable.css({transition: "0s"})
+      validarVictoria('easy')
     }, 400)
   }
 })
-
-//Codigo Cronómetro
-
-
 })
+
+function validarVictoria(level){
+  if (level == 'easy') level = 3
+  else if(level == 'hard') level = 5
+  else level = 8
+  console.log(level)
+  const elementsT2 = $('#tower2').data('data').elements.length
+  const elementsT3 = $('#tower3').data('data').elements.length
+  console.log(elementsT2+ " "+ elementsT3)
+  if (elementsT2 == level || elementsT3 == level) {
+    alert('Ganaste!')
+  }
+}
+function startGame(){
+  $('#mainFace').css({
+    transform: 'scale(0)',
+    'border-radius':'50%'
+  })
+  setTimeout(function(){
+    $('#game').css({
+      transform: 'scale(1)',
+      'border-radius': 0
+    })
+  },400)
+}

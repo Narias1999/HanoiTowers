@@ -3,23 +3,36 @@
 <head>
 	<meta charset="utf-8">
 	<title>Drag and drop</title>
-	<style type="text/css">
-	</style>
+	<link rel="stylesheet" type="text/css" href="estilos.css">
 	<script type="text/javascript" src="jquery.js"></script>
 	<script type="text/javascript" src="jquery-ui.min.js"></script>
 	<script type="text/javascript" src="codigo.js"></script>
 </head>
 <body>
-	<div class="container">
+	<div id="mainFace">
+		<h1>Torres de Hanoi</h1>
+		<p>¿En que nivel vas a jugar?</p>
+		<ul>
+			<li><a href="#" id="easy">Fácil</a></li>
+			<li><a href="#" id="medium">Medio</a></li>
+			<li><a href="#" id="hard" >Difícil</a></li>
+		</ul>
+	</div>
+	<div id="game">
 		<div class="aro" id="drag1"></div>
 		<div class="aro" id="drag2"></div>
 		<div class="aro" id="drag3"></div>
+		<div class="aro" id="drag4"></div>
+		<div class="aro" id="drag5"></div>
+		<div class="aro" id="drag6"></div>
+		<div class="aro" id="drag7"></div>
+		<div class="aro" id="drag8"></div>
 		<div class="tower" id="tower1"></div>
 		<div class="tower" id="tower2"></div>
 		<div class="tower" id="tower3"></div>
-	</div>
-	<div class="points">
-		<p>Numero de jugadas: <span id="jugadas"></span></p>
+		<div class="points">
+			<p>Numero de jugadas: <span id="jugadas"></span></p>
+		</div>
 	</div>
 	
 </body>
