@@ -1,3 +1,4 @@
+let minutos = 0, segundos = 0
 $(function () {
   for (let i = 1; i <= 8; i++) {
     $(`#drag${i}`).data('data',{
@@ -6,43 +7,63 @@ $(function () {
     })
   }
   $('.aro').draggable({disabled: true})
-
+  let level
   $('#easy').click(function(){
-    $('#tower1').data('data',{
-      pos: 'left',
-      maxValue: 3,
-      elements: [$('#drag1'),$('#drag2'),$('#drag3')]
-    })
-    $('#drag4').css('display','none')
-    $('#drag5').css('display','none')
-    $('#drag6').css('display','none')
-    $('#drag7').css('display','none')
-    $('#drag8').css('display','none')
-    startGame('easy');
+    $('a').removeClass('active')
+    $(this).addClass('active')
+    level = 1
   })
   $('#medium').click(function(){
-    $('#tower1').data('data',{
-      pos: 'left',
-      maxValue: 5,
-      elements: [$('#drag1'),$('#drag2'),$('#drag3'),$('#drag4'),$('#drag5')]
-    })
-    $('#drag6').css('display','none')
-    $('#drag7').css('display','none')
-    $('#drag8').css('display','none')
-    startGame('medium');
+    $('a').removeClass('active')
+    $(this).addClass('active')
+    level = 2
   })
   $('#hard').click(function(){
-    $('#tower1').data('data',{
-      pos: 'left',
-      maxValue: 5,
-      elements: [$('#drag1'),$('#drag2'),$('#drag3'),$('#drag4'),$('#drag5'),$('#drag6'),$('#drag7'),$('#drag8')]
-    })
-    startGame('hard');
+    $('a').removeClass('active')
+    $(this).addClass('active')
+    level = 3
   })
 
+  $('#start').click(function(){
+    let lv
+    if (level==1) {
+      $('#tower1').data('data',{
+        pos: 'left',
+        maxValue: 3,
+        elements: [$('#drag1'),$('#drag2'),$('#drag3')]
+      })
+      $('#drag4').css('display','none')
+      $('#drag5').css('display','none')
+      $('#drag6').css('display','none')
+      $('#drag7').css('display','none')
+      $('#drag8').css('display','none')
+      lv = 'easy'
+    }else if(level==2){
+      $('#tower1').data('data',{
+        pos: 'left',
+        maxValue: 5,
+        elements: [$('#drag1'),$('#drag2'),$('#drag3'),$('#drag4'),$('#drag5')]
+      })
+      $('#drag6').css('display','none')
+      $('#drag7').css('display','none')
+      $('#drag8').css('display','none')
+      lv = 'medium'
+    }else if(level == 3){
+      $('#tower1').data('data',{
+        pos: 'left',
+        maxValue: 8,
+        elements: [$('#drag1'),$('#drag2'),$('#drag3'),$('#drag4'),$('#drag5'),$('#drag6'),$('#drag7'),$('#drag8')]
+      })
+      lv = 'hard'
+    }else{
+      alert('Por favor, primero seleccione un nivel')
+      return
+    }
+    startGame(lv)
+  })
 })
 
-function validarVictoria(level){
+function validarVictoria(level, control){
   if (level == 'easy') level = 3
   else if(level == 'medium') level = 5
   else level = 8
@@ -50,10 +71,12 @@ function validarVictoria(level){
   const elementsT3 = $('#tower3').data('data').elements.length
   if (elementsT2 == level || elementsT3 == level) {
     alert('Ganaste!')
+    clearInterval(control)
   }
 }
 
 function startGame(level){
+  let control = setInterval(cronometro,1000)
   let jugadas = 0
   $('#jugadas').html(jugadas)
   $('#mainFace').css({
@@ -141,8 +164,20 @@ function startGame(level){
       })
       setTimeout(function(){
         ui.draggable.css({transition: "0s"})
-        validarVictoria(level)
+        validarVictoria(level, control)
       }, 400)
     }
   })
+}
+
+function cronometro(){
+  segundos++
+  if (segundos == 60) {
+    minutos++
+    segundos = 0
+  }
+  let txtS = (segundos<10) ? `0${segundos}` : `${segundos}`
+  let txtM = (minutos<10) ? `0${minutos}` : `${minutos}`
+  $('#segundos').html(txtS)
+  $('#minutos').html(txtM)
 }

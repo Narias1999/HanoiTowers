@@ -1,5 +1,4 @@
 *{
-	border-radius: border-box;
 	margin:0;
 	padding: :0;
 }
@@ -33,7 +32,7 @@ ul li{
 	display: inline-block;
 	margin: 0 15px;
 }
-ul li a{
+.btn{
 	text-decoration: none;
 	color: #2c3e50;
 	padding: 10px 20px;
@@ -42,9 +41,23 @@ ul li a{
 	letter-spacing: 1px;
 	transition: .2s;
 }
-ul li a:hover{
+.active{
 	background: #2c3e50;
 	color: #fff;
+	border: 2px solid #2c3e50;
+}
+.start{
+	margin: 50px auto;
+	background: #d35400;
+	color: #fff;
+	border:0;
+}
+.start:hover{
+	border:0;
+	color: #fff;
+}
+.start:active{
+	transform: scale(.9);
 }
 #game{
 	margin: 0 auto;
@@ -127,10 +140,13 @@ ul li a:hover{
 }
 .points{
 	position: absolute;
+	display: flex;
+	justify-content: space-around;
+	width: 100%;
 	top: 10vh;
 	left: 0;
 	font-weight: 600;
 }
-#jugadas{
+p span{
 	font-weight: 400;
 }
