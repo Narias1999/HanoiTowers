@@ -5,7 +5,7 @@
 }
 body{
 	font-family: 'Arial';
-	color: #3498db;
+	color: #2c3e50;
 	background: #fcffff;
 }
 #mainFace{
@@ -35,15 +35,15 @@ ul li{
 }
 ul li a{
 	text-decoration: none;
-	color: #3498db;
+	color: #2c3e50;
 	padding: 10px 20px;
-	border: 2px solid #3498db;
+	border: 2px solid #2c3e50;
 	border-radius: 4px;
 	letter-spacing: 1px;
 	transition: .2s;
 }
 ul li a:hover{
-	background: #3498db;
+	background: #2c3e50;
 	color: #fff;
 }
 #game{
@@ -62,63 +62,63 @@ ul li a:hover{
 	margin: 0 auto;
 	height: 200px;
 	width: 20px;
-	border-top-left-radius: 10px;
-	border-top-right-radius: 10px;
-	background: #ccc;
+	border-top-left-radius: 103px;
+	border-top-right-radius: 103px;
+	background: #AA813C;
 	border: 10vw solid white;
 }
 .aro{
 	height: 3vh;
 	border-radius: 8px;
-	background: red;
 	position: absolute;
 }
 #drag1{
     width: 18vw;
     left: 4.3vw;
     top: 62.4vh;
+    background: #172533;
 }
 #drag2{
 	width: 16vw;
 	left: 5.3vw;
 	top: 59.4vh;
-	background: blue;
+	background: #24394F;
 }
 #drag3{
 	width: 14vw;
 	left: 6.3vw;
 	top: 56.4vh;
-	background: peru;
+	background: #2D4863;
 }
 #drag4{
 	width: 12vw;
 	left: 7.3vw;
 	top: 53.4vh;
-	background: peru;
+	background: #3A5D7F;
 }
 #drag5{
 	width: 10vw;
 	left: 8.3vw;
 	top: 50.4vh;
-	background: peru;
+	background: #4B78A6;
 }
 #drag6{
 	width: 8vw;
 	left: 9.3vw;
 	top: 47.4vh;
-	background: peru;
+	background: #4D7CAA;
 }
 #drag7{
 	width: 6vw;
 	left: 10.3vw;
 	top: 44.4vh;
-	background: peru;
+	background: #598FC4;
 }
 #drag8{
 	width: 4vw;
 	left: 11.3vw;
 	top: 41.4vh;
-	background: peru;
+	background: #65A1DE;
 }
 .bottom-center{
 	margin: 0 auto;
