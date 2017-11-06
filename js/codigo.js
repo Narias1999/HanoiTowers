@@ -1,3 +1,4 @@
+let control
 let minutos = 0, segundos = 0
 $(function () {
   for (let i = 1; i <= 8; i++) {
@@ -67,21 +68,45 @@ $(function () {
   })
 })
 
-function validarVictoria(level, control){
-  if (level == 'easy') level = 3
-  else if(level == 'medium') level = 5
-  else level = 8
+function validarVictoria(level,jugadas){
+  let aros
+  if (level == 'easy') aros = 3
+  else if(level == 'medium') aros = 5
+  else aros = 8
   const elementsT2 = $('#tower2').data('data').elements.length
   const elementsT3 = $('#tower3').data('data').elements.length
-  if (elementsT2 == level || elementsT3 == level) {
-    alert('Ganaste!')
+  if (elementsT2 == aros || elementsT3 == aros) {
     clearInterval(control)
+    $('.aro').draggable({disabled: true})
+    setTimeout(function(){
+      win(jugadas, level)
+    }, 800)
   }
 }
-
+function win(jugadas, level){
+  $('#game').css('transform', 'scale(0)')
+  $('#moves').html(jugadas)
+  if (minutos < 10) minutos = `0${minutos}`
+  if (segundos < 10) segundos = `0${segundos}`
+  $('#time').html(`${minutos}:${segundos} m`)
+  setTimeout(function(){
+    $('#winFace').css('transform', 'scale(1)')
+  }, 400)
+  if (level == 'easy') level = "facil"
+  else if(level == 'medium') level = "medio"
+  else level = "dificil"
+  let seconds = 5
+  let username = $('#username').val()
+  setInterval(function(){
+    if (!seconds){
+      location.href = `php/resultados.php?user=${username}&minutos=${minutos}&segundos=${segundos}&jugadas=${jugadas}&nivel=${level}`
+    }
+    $('#seconds').html(seconds)
+    seconds--
+  },1000)
+}
 function startGame(level){
   $('#user').html($('#username').val())
-  let control = setInterval(cronometro,1000)
   let jugadas = 0
   $('#jugadas').html(jugadas)
   $('#mainFace').css({
@@ -94,6 +119,12 @@ function startGame(level){
       'border-radius': 0
     })
   },400)
+  setTimeout(function(){ 
+    control = setInterval(cronometro,1000)
+    $('#pause').click(function(){
+      pause()
+    })
+  }, 800)
   $('#tower2').data('data',{
     pos: 'center',
     maxValue: 0,
@@ -148,7 +179,7 @@ function startGame(level){
         $(this).data("data").maxValue = dragValue
       }
 
-      let top = 65.4 - ($(this).data("data").elements.length * 3)
+      let top = 72.6 - ($(this).data("data").elements.length * 3)
       top = `${top}vh`
       let left
       let position = $(this).data('data').pos
@@ -169,7 +200,7 @@ function startGame(level){
       })
       setTimeout(function(){
         ui.draggable.css({transition: "0s"})
-        validarVictoria(level, control)
+        validarVictoria(level, jugadas)
       }, 400)
     }
   })
@@ -185,4 +216,22 @@ function cronometro(){
   let txtM = (minutos<10) ? `0${minutos}` : `${minutos}`
   $('#segundos').html(txtS)
   $('#minutos').html(txtM)
+}
+
+function pause(){
+  console.log(control)
+  clearInterval(control)
+  $('#resume').click(function(){
+    $('#pauseFace').css({
+      'z-index':0,
+      'opacity':0
+    })
+    setTimeout(function(){
+      control = setInterval(cronometro,1000)
+    },400)
+  })
+  $('#pauseFace').css({
+    'z-index':1000,
+    'opacity':1
+  })
 }
