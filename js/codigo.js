@@ -189,8 +189,8 @@ function startGame(level){
         $(this).data("data").maxValue = dragValue
       }
 
-      let top = 72.6 - ($(this).data("data").elements.length * 3)
-      top = `${top}vh`
+      let top =  $(this).data("data").elements.length * 17
+      top = `calc(100% - ${top}px)`
       let left
       let position = $(this).data('data').pos
       if (position == 'center') {
@@ -204,9 +204,9 @@ function startGame(level){
         left = `${left}vw`
       }
       ui.draggable.css({
-        top,
         left,
-        transition: ".4s",
+        top,
+        transition: ".4s"
       })
       setTimeout(function(){
         ui.draggable.css({transition: "0s"})

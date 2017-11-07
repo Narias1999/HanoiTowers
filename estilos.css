@@ -136,64 +136,64 @@ ul li{
 	border-top-left-radius: 10px;
 	border-top-right-radius: 10px;
 }
+#juego{
+	width: 100%;
+	display: flex;
+	position: relative;
+}
 .aro{
 	z-index: 3;
-	height: 3vh;
+	height: 17px;
 	border-radius: 8px;
 	position: absolute;
 }
 #drag1{
     width: 18vw;
     left: 4.3vw;
-    top: 69.6vh;
+    bottom: 0;
     background: #172533;
 }
 #drag2{
 	width: 16vw;
 	left: 5.3vw;
-	top: 66.6vh;
+	bottom: 17px;
 	background: #24394F;
 }
 #drag3{
 	width: 14vw;
 	left: 6.3vw;
-	top: 63.6vh;
+	bottom: 34px;
 	background: #2D4863;
 }
 #drag4{
 	width: 12vw;
 	left: 7.3vw;
-	top: 60.6vh;
+	bottom: 51px;
 	background: #3A5D7F;
 }
 #drag5{
 	width: 10vw;
 	left: 8.3vw;
-	top: 57.6vh;
+	bottom: 68px;
 	background: #4A76A3;
 }
 #drag6{
 	width: 8vw;
 	left: 9.3vw;
-	top: 54.6vh;
+	bottom: 85px;
 	background: #4D7CAA;
 }
 #drag7{
 	width: 6vw;
 	left: 10.3vw;
-	top: 51.6vh;
+	bottom: 102px;
 	background: #598FC4;
 }
 #drag8{
 	width: 4vw;
 	left: 11.3vw;
-	top: 48.6vh;
+	bottom: 119px;
 	background: #65A1DE;
-}
-.bottom-center{
-	margin: 0 auto;
-	position: relative;
-	bottom: 35vh;
 }
 .points{
 	z-index: 10;
