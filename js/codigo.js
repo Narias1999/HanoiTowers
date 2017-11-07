@@ -1,6 +1,18 @@
 let control
 let minutos = 0, segundos = 0
 $(function () {
+  $('#resume').click(function(){
+    $('#pauseFace').css({
+      'z-index':0,
+      'opacity':0
+    })
+    setTimeout(function(){
+      cronometro()
+    },300)
+  })
+  $('#pause').click(function(){
+    pause()
+  })
   for (let i = 1; i <= 8; i++) {
     $(`#drag${i}`).data('data',{
       value: i,
@@ -119,12 +131,9 @@ function startGame(level){
       'border-radius': 0
     })
   },400)
-  setTimeout(function(){ 
-    control = setInterval(cronometro,1000)
-    $('#pause').click(function(){
-      pause()
-    })
-  }, 800)
+  setTimeout(function(){
+    cronometro()
+  },800) 
   $('#tower2').data('data',{
     pos: 'center',
     maxValue: 0,
@@ -216,20 +225,11 @@ function cronometro(){
   let txtM = (minutos<10) ? `0${minutos}` : `${minutos}`
   $('#segundos').html(txtS)
   $('#minutos').html(txtM)
+  control = setTimeout(function(){ cronometro() }, 1000);
 }
 
 function pause(){
-  console.log(control)
-  clearInterval(control)
-  $('#resume').click(function(){
-    $('#pauseFace').css({
-      'z-index':0,
-      'opacity':0
-    })
-    setTimeout(function(){
-      control = setInterval(cronometro,1000)
-    },400)
-  })
+  clearTimeout(control)
   $('#pauseFace').css({
     'z-index':1000,
     'opacity':1
