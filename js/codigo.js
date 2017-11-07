@@ -147,6 +147,7 @@ function startGame(level){
 
   let elements = $('#tower1').data('data').elements
   elements[elements.length-1].draggable({disabled:false})
+ 
   $( ".tower" ).droppable({
     drop: function( event, ui ) {
       jugadas++

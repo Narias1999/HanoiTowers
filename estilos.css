@@ -23,6 +23,14 @@ body{
 	text-transform: uppercase;
 	transition: .4s;
 }
+#bg{
+	position: absolute;
+	z-index: 1;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	right: 0;
+}
 #winFace{
 	transform: scale(0);
 }
@@ -113,6 +121,7 @@ ul li{
 	transform: scale(.9);
 }
 .tower{
+	z-index: 2;
 	margin: 0 auto;
 	height: 300px;
 	display: flex;
@@ -128,6 +137,7 @@ ul li{
 	border-top-right-radius: 10px;
 }
 .aro{
+	z-index: 3;
 	height: 3vh;
 	border-radius: 8px;
 	position: absolute;
@@ -186,6 +196,7 @@ ul li{
 	bottom: 35vh;
 }
 .points{
+	z-index: 10;
 	position: absolute;
 	display: flex;
 	align-items: center;
