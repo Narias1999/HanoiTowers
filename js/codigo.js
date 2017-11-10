@@ -1,4 +1,5 @@
 let control
+let jugadas = 0
 let minutos = 0, segundos = 0
 $(function () {
   $('#resume').click(function(){
@@ -19,7 +20,14 @@ $(function () {
       lastTower: $('#tower1')
     })
   }
-  $('.aro').draggable({disabled: true})
+  $('.aro').draggable({
+    disabled: true, 
+    revert: true,
+    stop: function(){
+      jugadas++
+      $('#jugadas').html(jugadas)
+    }
+  })
   let level
   $('#easy').click(function(){
     $('a').removeClass('active')
@@ -119,7 +127,6 @@ function win(jugadas, level){
 }
 function startGame(level){
   $('#user').html($('#username').val())
-  let jugadas = 0
   $('#jugadas').html(jugadas)
   $('#mainFace').css({
     transform: 'scale(0)',
@@ -147,23 +154,16 @@ function startGame(level){
 
   let elements = $('#tower1').data('data').elements
   elements[elements.length-1].draggable({disabled:false})
- 
   $( ".tower" ).droppable({
     drop: function( event, ui ) {
-      jugadas++
-      $('#jugadas').html(jugadas)
       let maxValue = $(this).data("data").maxValue
       let dragValue = ui.draggable.data("data").value
       
-      if (dragValue < maxValue) {
-        ui.draggable.draggable({
-          revert: true
-        })
+      if (dragValue > maxValue) {
+        ui.draggable.draggable({revert: false})
         setTimeout(function(){
-          ui.draggable.draggable({revert: false})
-        }, 400)
-      }
-      else{
+          ui.draggable.draggable({revert: true})
+        },400)
         let estado = false
         $(this).data('data').elements.forEach(function(el){
           if (el[0] == ui.draggable[0]) estado = true
@@ -189,7 +189,7 @@ function startGame(level){
         $(this).data("data").maxValue = dragValue
       }
 
-      let top =  $(this).data("data").elements.length * 17
+      let top =  $(this).data("data").elements.length * 20
       top = `calc(100% - ${top}px)`
       let left
       let position = $(this).data('data').pos
