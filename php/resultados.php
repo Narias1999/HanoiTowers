@@ -64,6 +64,8 @@ else{
 						$query = "select * from $nivel where username='$user'";
 						$res = mysqli_query(Conexion::conectar(),$query);
 						while ($data = mysqli_fetch_array($res)){
+						if ($data['minutos']<10) $data['minutos'] = "0{$data['minutos']}";
+						if ($data['segundos']<10) $data['segundos'] = "0{$data['segundos']}";
 							echo "<tr class='user-row'>
 							<td>Tú</td>
 								<td>{$data['username']}</td>
