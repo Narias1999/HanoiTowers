@@ -112,14 +112,15 @@ function win(jugadas, level){
   setTimeout(function(){
     $('#winFace').css('transform', 'scale(1)')
   }, 400)
-  if (level == 'easy') level = "facil"
-  else if(level == 'medium') level = "medio"
-  else level = "dificil"
   let seconds = 5
   let username = $('#username').val()
   setInterval(function(){
     if (!seconds){
-      location.href = `php/resultados.php?user=${username}&minutos=${minutos}&segundos=${segundos}&jugadas=${jugadas}&nivel=${level}`
+      firebase.database().ref(level).push({
+        username,
+        minutos,
+        segundos
+      })
     }
     $('#seconds').html(seconds)
     seconds--
