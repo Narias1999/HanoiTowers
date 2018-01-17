@@ -116,11 +116,16 @@ function win(jugadas, level){
   let username = $('#username').val()
   setInterval(function(){
     if (!seconds){
+      $('#winFace').css('transform', 'scale(0)')
       firebase.database().ref(level).push({
         username,
         minutos,
-        segundos
+        segundos,
+        jugadas
       })
+      setTimeout(() => {
+        $('#rankingFace').css('transform', 'scale(1)')
+      },300)
     }
     $('#seconds').html(seconds)
     seconds--

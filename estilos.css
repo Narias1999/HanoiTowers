@@ -286,3 +286,12 @@ td,th{
 	font-weight: 600;
 	color: #d35400;
 }
+.ranking-face {
+	transition: .4s;
+	position: absolute;
+	transform: scale(0);
+	top: 0;
+    bottom: 0;
+    right: 0;
+    left: 0;
+}
