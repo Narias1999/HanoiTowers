@@ -81,14 +81,7 @@
 						<th>N° de Jugadas</th>
 					</tr>
 				</thead>
-				<tbody id="rankingTable">
-					<tr class="user-row">
-						<td>1º</td>
-						<td>Nicolas Arias</td>
-						<td>00:11 m</td>
-						<td>8</td>
-					</tr>
-				</tbody>
+				<tbody id="rankingTable"></tbody>
 			</table>
 			<a href="../index.html" class="btn start">Volver a Jugar</a>
 		</section>
@@ -120,11 +113,28 @@
 				let last = null
 				arrayData.forEach(e => {
 					if (!last) {
+						e.pos = 1
 						last = e
 					} else {
-						
+						if (last.minutos == e.minutos && last.jugadas == e.jugadas && last.segundos == e.segundos) {
+							e.pos = last.pos
+						} else e.pos = last.pos +1
+						last = e
 					}
 				})
+				arrayData = arrayData.filter(e => e.pos < 11)
+				$('#rankingTable').html('')
+				for(const iterable of arrayData) {
+					const html = `
+					<tr class="user-row">
+						<td>${iterable.pos}º</td>
+						<td>${iterable.username}</td>
+						<td>${iterable.minutos}:${iterable.segundos} m</td>
+						<td>${iterable.jugadas}</td>
+					</tr>`
+					$('#rankingTable').append(html)
+											
+				}
 				
 			}
 
