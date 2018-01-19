@@ -138,10 +138,10 @@
 				fr.onload = e => {
 					imageCanvas.src = fr.result
 					cropper = new Cropper(imageCanvas, {
-					    aspectRatio: 1 / 1,
+					    // aspectRatio: 1 /,
 					    autoCropArea: 1,
 					    modal: false,
-					    viewMode: 2,
+					    viewMode: 0,
 					    dragMode: 'move',
 					    background: false
 					  })
@@ -156,6 +156,7 @@
 			$('#imageModal').removeClass('show')
 			$('.modal').removeClass('show')
 			userImage = cropper.getCroppedCanvas().toDataURL()
+			console.log(userImage.length)
 		})
 		const levels = Object.keys(dataLevels)
 		function createListener (level) {
