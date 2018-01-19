@@ -95,7 +95,7 @@
 				</thead>
 				<tbody id="rankingTable"></tbody>
 			</table>
-			<a href="../index.html" class="btn start">Volver a Jugar</a>
+			<a href="index.html" class="btn start">Volver a Jugar</a>
 		</section>
 	</div>
 	<script type="text/javascript" src="js/jquery.js"></script>
@@ -123,9 +123,9 @@
 			hard: 'Difícil'
 		}
 		let dataLevels = {
-			easy: null,
-			medium: null,
-			hard: null
+			easy: [],
+			medium: [],
+			hard: []
 		}
 		const levels = Object.keys(dataLevels)
 		$('#photoPicker').click(e => {
@@ -163,19 +163,10 @@
 			userImage = cropper.getCroppedCanvas().toDataURL('image/jpeg')
 			cropper.destroy()
 		})
-		async function getDataLevel (level){
-			const data = await firebase.database().ref(level).once('value')
-			let arr = []
-			if (Object.keys(data).length) {
-				for (const key in data) {
-					arr.push(data[key])
-				}
-				dataLevels[level] = orderArray(arr)
-			} else dataLevels[level] = arr
-		}
 		function orderArray (arr) {
 			let pos = 1, counter = 0
 			arr.sort(compare)
+			console.log(arr)
 			let last = null
 			arr.forEach(e => {
 				counter++
@@ -214,9 +205,10 @@
 			 levelsNoPlay.forEach(e => {
 				 firebase.database().ref(e).off('child_added')
 			 })
-		 if(!dataLevels[level]) await getDataLevel(level)
 			firebase.database().ref(level).on("child_added", snap => {
+				console.log('add')
 				const data = snap.val()
+				console.log(data)
 				dataLevels[level].push(data)
 				dataLevels[level] = orderArray(dataLevels[level])
 				renderizar(level)
