@@ -4,11 +4,22 @@
 	<meta charset="utf-8">
 	<title>Drag and drop</title>
 	<link rel="stylesheet" type="text/css" href="estilos.css">
+	<link  href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.2.2/cropper.min.css" rel="stylesheet">
 </head>
 <body>
+	<div id="imageModal">
+		<div class="modal">
+			<div id="imageCanvas">
+				<img src="" id="canvas"/>
+			</div>
+			<a href="#" class="btn start save" id="save">Guardar</a>
+		</div>
+	</div>
 	<div id="mainFace">
 		<h1>Torres de Hanoi</h1>
 		<input type="text" id="username" name="username" placeholder="NOMBRE DE USUARIO">
+		<a href="#" class="btn photo" id="photoPicker">Mi foto</a>
+		<input type="file" id="photo" class="none" accept="image/*">
 		<p>¿En que nivel vas a jugar?</p>
 		<ul>
 			<li><a href="#" class="btn" id="easy">Fácil</a></li>
@@ -76,6 +87,7 @@
 				<thead>
 					<tr>
 						<th>Posicion</th>
+						<th>Foto</th>
 						<th>Nombre de Usuario</th>
 						<th>Tiempo</th>
 						<th>N° de Jugadas</th>
@@ -88,9 +100,14 @@
 	</div>
 	<script type="text/javascript" src="js/jquery.js"></script>
 	<script type="text/javascript" src="js/jquery-ui.min.js"></script>
+	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.2.2/cropper.min.js"></script>
 	<script src="https://www.gstatic.com/firebasejs/4.8.2/firebase.js"></script>
 	<script>
 		// Initialize Firebase
+		const fr = new FileReader()
+		let cropper
+		let userImage = 'user.jpg'
+		const imageCanvas = $('#canvas')[0]
 		let pos
 		var config = {
 			apiKey: "AIzaSyBY6A37cLRnlvmxu_f9QZa1O4f2Hm_onfk",
@@ -101,17 +118,67 @@
 			messagingSenderId: "644478568762"
 		};
 		firebase.initializeApp(config);
-		firebase.database().ref('easy').on("value", snap => {
+		const levelsInSpanish = {
+			easy: 'Fácil',
+			medium: 'Medio',
+			hard: 'Difícil'
+		}
+		let dataLevels = {
+			easy: [],
+			medium: [],
+			hard: []
+		}
+		$('#photoPicker').click(e => {
+			e.preventDefault()
+			$('#photo').click()
+		})
+		$('#photo').on('change', e => {
+			if($('#photo')[0].files.length) {
+				fr.readAsDataURL($('#photo')[0].files[0])
+				fr.onload = e => {
+					imageCanvas.src = fr.result
+					cropper = new Cropper(imageCanvas, {
+					    aspectRatio: 1 / 1,
+					    autoCropArea: 1,
+					    modal: false,
+					    viewMode: 2,
+					    dragMode: 'move',
+					    background: false
+					  })
+					$('#imageModal').addClass('show')
+					$('.modal').addClass('show')
+					console.log(fr)
+				}
+			}
+		})
+		$('#save').click(e => {
+			e.preventDefault()
+			$('#imageModal').removeClass('show')
+			$('.modal').removeClass('show')
+			userImage = cropper.getCroppedCanvas().toDataURL()
+		})
+		const levels = Object.keys(dataLevels)
+		function createListener (level) {
+			$('#resultLevel').text(levelsInSpanish[level])
+			const levelsNoPlay = levels.filter(e => e !== level)
+			levelsNoPlay.forEach(e => {
+				firebase.database().ref(e).off('value')
+			})
+			firebase.database().ref(level).on("value", snap => {
 			const data = snap.val()
-			if (data) {
-				let arrayData = []
+			dataLevels[level] = []
+			if (Object.keys(data).length) {
 				for (const key in data) {
-					arrayData.push(data[key])
+					dataLevels[level].push(data[key])
 				}
 				pos = 1
-				arrayData.sort(compare)
+				dataLevels[level].sort(compare)
+				console.log(dataLevels[level])
 				let last = null
-				arrayData.forEach(e => {
+				let counter = 0
+				dataLevels[level].forEach(e => {
+					counter ++
+					e.count = counter
 					if (!last) {
 						e.pos = 1
 						last = e
@@ -122,12 +189,16 @@
 						last = e
 					}
 				})
-				arrayData = arrayData.filter(e => e.pos < 11)
+				dataLevels[level] = dataLevels[level].filter(e => e.count < 11)
+
 				$('#rankingTable').html('')
-				for(const iterable of arrayData) {
+				for(const iterable of dataLevels[level]) {
 					const html = `
 					<tr class="user-row">
 						<td>${iterable.pos}º</td>
+						<td class="image-td">
+							<img src="${iterable.userImage}" alt="imagen">
+						</td>
 						<td>${iterable.username}</td>
 						<td>${iterable.minutos}:${iterable.segundos} m</td>
 						<td>${iterable.jugadas}</td>
@@ -139,6 +210,7 @@
 			}
 
 		})
+		}
 		function compare(a, b) {
 			if(a.minutos < b.minutos) return -1		
 			else if(a.minutos > b.minutos)return 1

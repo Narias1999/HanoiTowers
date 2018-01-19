@@ -1,6 +1,76 @@
 *{
 	margin:0;
+	box-sizing: border-box;
 	padding: :0;
+}
+.none {
+	display: none;
+}
+.photo {
+	background: #2980b9;
+    border: 0 !important;
+    width: 85vw;
+    max-width: 350px;
+    color: #fff !important;
+    transition: .3s;
+}
+.photo:hover {
+	background: #3498db;
+}
+#imageModal.show {
+	background: rgba(0,0,0,.5);
+	z-index: 3000
+}
+#imageModal {
+	background: rgba(0,0,0,0);
+	z-index: -1;
+	position: absolute;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	left: 0;
+	transition: .2s;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+.save {
+	margin: 15px !important;
+}
+.modal {
+	opacity: 0;
+	transform: scale(.3);
+	display: flex;
+	transition: .4s;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	background: #fff;
+	width: 500px;
+	max-width: 90%;
+	height: 400px;
+	border-radius: 8px;
+}
+.modal.show {
+	opacity: 1;
+	transform: scale(1);
+}
+#imageCanvas {
+	max-width: 90%;
+	max-height: 320px;
+}
+.image-td{
+	justify-content: center;
+    display: flex;
+    padding: 0;
+}
+.image-td img {
+	align-self: center;
+    width: 100%;
+    max-width: 50px;
+}
+.modal img {
+	max-width: 100%;
 }
 body{
 	font-family: 'Arial';

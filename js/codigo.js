@@ -84,6 +84,7 @@ $(function () {
       alert('Por favor, primero seleccione un nivel')
       return
     }
+    createListener(lv)
     startGame(lv)
   })
 })
@@ -121,7 +122,8 @@ function win(jugadas, level){
         username,
         minutos,
         segundos,
-        jugadas
+        jugadas,
+        userImage
       })
       setTimeout(() => {
         $('#rankingFace').css('transform', 'scale(1)')
