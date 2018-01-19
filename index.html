@@ -104,11 +104,10 @@
 	<script src="https://www.gstatic.com/firebasejs/4.8.2/firebase.js"></script>
 	<script>
 		// Initialize Firebase
-		const fr = new FileReader()
+		let fr
 		let cropper
 		let userImage = 'user.jpg'
-		const imageCanvas = $('#canvas')[0]
-		let pos
+		let imageCanvas = $('#canvas')[0]
 		var config = {
 			apiKey: "AIzaSyBY6A37cLRnlvmxu_f9QZa1O4f2Hm_onfk",
 			authDomain: "hanoitowers-6ef4f.firebaseapp.com",
@@ -116,38 +115,44 @@
 			projectId: "hanoitowers-6ef4f",
 			storageBucket: "",
 			messagingSenderId: "644478568762"
-		};
-		firebase.initializeApp(config);
+		}
+		firebase.initializeApp(config)
 		const levelsInSpanish = {
 			easy: 'Fácil',
 			medium: 'Medio',
 			hard: 'Difícil'
 		}
 		let dataLevels = {
-			easy: [],
-			medium: [],
-			hard: []
+			easy: null,
+			medium: null,
+			hard: null
 		}
+		const levels = Object.keys(dataLevels)
 		$('#photoPicker').click(e => {
 			e.preventDefault()
 			$('#photo').click()
 		})
 		$('#photo').on('change', e => {
 			if($('#photo')[0].files.length) {
-				fr.readAsDataURL($('#photo')[0].files[0])
-				fr.onload = e => {
-					imageCanvas.src = fr.result
-					cropper = new Cropper(imageCanvas, {
-					    // aspectRatio: 1 /,
-					    autoCropArea: 1,
-					    modal: false,
-					    viewMode: 0,
-					    dragMode: 'move',
-					    background: false
-					  })
-					$('#imageModal').addClass('show')
-					$('.modal').addClass('show')
-					console.log(fr)
+				const kilobyteSize= parseInt($('#photo')[0].files[0].size / 1024);
+				if (kilobyteSize < 160) {
+					fr = new FileReader()
+					fr.readAsDataURL($('#photo')[0].files[0])
+					fr.onload = e => {
+						imageCanvas.src = fr.result
+						cropper = new Cropper(imageCanvas, {
+								aspectRatio: 1 / 1,
+								autoCropArea: 1,
+								modal: false,
+								viewMode: 2,
+								dragMode: 'move',
+								background: false
+							})
+						$('#imageModal').addClass('show')
+						$('.modal').addClass('show')
+					}
+				} else {
+					alert('Por favor seleccione una foto de menos de 150 kb')
 				}
 			}
 		})
@@ -155,46 +160,43 @@
 			e.preventDefault()
 			$('#imageModal').removeClass('show')
 			$('.modal').removeClass('show')
-			userImage = cropper.getCroppedCanvas().toDataURL()
-			console.log(userImage.length)
+			userImage = cropper.getCroppedCanvas().toDataURL('image/jpeg')
+			cropper.destroy()
 		})
-		const levels = Object.keys(dataLevels)
-		function createListener (level) {
-			$('#resultLevel').text(levelsInSpanish[level])
-			const levelsNoPlay = levels.filter(e => e !== level)
-			levelsNoPlay.forEach(e => {
-				firebase.database().ref(e).off('value')
-			})
-			firebase.database().ref(level).on("value", snap => {
-			const data = snap.val()
-			dataLevels[level] = []
+		async function getDataLevel (level){
+			const data = await firebase.database().ref(level).once('value')
+			let arr = []
 			if (Object.keys(data).length) {
 				for (const key in data) {
-					dataLevels[level].push(data[key])
+					arr.push(data[key])
 				}
-				pos = 1
-				dataLevels[level].sort(compare)
-				console.log(dataLevels[level])
-				let last = null
-				let counter = 0
-				dataLevels[level].forEach(e => {
-					counter ++
-					e.count = counter
-					if (!last) {
-						e.pos = 1
-						last = e
-					} else {
-						if (last.minutos == e.minutos && last.jugadas == e.jugadas && last.segundos == e.segundos) {
-							e.pos = last.pos
-						} else e.pos = last.pos +1
-						last = e
-					}
-				})
-				dataLevels[level] = dataLevels[level].filter(e => e.count < 11)
-
-				$('#rankingTable').html('')
-				for(const iterable of dataLevels[level]) {
-					const html = `
+				dataLevels[level] = orderArray(arr)
+			} else dataLevels[level] = arr
+		}
+		function orderArray (arr) {
+			let pos = 1, counter = 0
+			arr.sort(compare)
+			let last = null
+			arr.forEach(e => {
+				counter++
+				e.count = counter
+				if (!last) {
+					e.pos = 1
+					last = e
+				} else {
+					if (last.minutos == e.minutos && last.jugadas == e.jugadas && last.segundos == e.segundos) {
+						e.pos = last.pos
+					} else e.pos = last.pos + 1
+					last = e
+				}
+			})
+			return arr.filter(e => e.count < 11)
+		}
+		function renderizar (level) {
+			$('#resultLevel').text(levelsInSpanish[level])
+			$('#rankingTable').html('')
+			for (const iterable of dataLevels[level]) {
+				const html = `
 					<tr class="user-row">
 						<td>${iterable.pos}º</td>
 						<td class="image-td">
@@ -204,13 +206,21 @@
 						<td>${iterable.minutos}:${iterable.segundos} m</td>
 						<td>${iterable.jugadas}</td>
 					</tr>`
-					$('#rankingTable').append(html)
-											
-				}
-				
+				$('#rankingTable').append(html)
 			}
-
-		})
+		}
+	 async function createListener (level) {
+		 const levelsNoPlay = levels.filter(e => e !== level)
+			 levelsNoPlay.forEach(e => {
+				 firebase.database().ref(e).off('child_added')
+			 })
+		 if(!dataLevels[level]) await getDataLevel(level)
+			firebase.database().ref(level).on("child_added", snap => {
+				const data = snap.val()
+				dataLevels[level].push(data)
+				dataLevels[level] = orderArray(dataLevels[level])
+				renderizar(level)
+			})
 		}
 		function compare(a, b) {
 			if(a.minutos < b.minutos) return -1		
