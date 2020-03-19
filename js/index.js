@@ -1,5 +1,10 @@
-import { getDraggableElements, hideMainScreen } from './utils.js';
-import { hoopsPerLevel } from './constants.js';
+import {
+  getDraggableElements,
+  hideMainScreen,
+  showGameScreen,
+  getHoopLeft
+} from "./utils.js";
+import { hoopsPerLevel } from "./constants.js";
 
 let control;
 let jugadas = 0;
@@ -110,13 +115,8 @@ function startGame(level) {
   $("#user").html($("#username").val());
   $("#jugadas").html(jugadas);
   hideMainScreen();
-  
-  setTimeout(function() {
-    $("#game").css({
-      transform: "scale(1)",
-      "border-radius": 0
-    });
-  }, 400);
+
+  setTimeout(showGameScreen, 400);
   setTimeout(function() {
     cronometro();
   }, 800);
@@ -133,7 +133,7 @@ function startGame(level) {
 
   let elements = $("#tower1").data("data").elements;
   elements[elements.length - 1].draggable({ disabled: false });
-  $(".tower").droppable({
+  $(".tower").droppable({ 
     drop(_, hoop) {
       let maxValue = $(this).data("data").maxValue;
       let dragValue = hoop.draggable.data("data").value;
@@ -143,16 +143,10 @@ function startGame(level) {
         setTimeout(function() {
           hoop.draggable.draggable({ revert: true });
         }, 400);
-        let estado = false;
+
         $(this)
           .data("data")
-          .elements.forEach(function(el) {
-            if (el[0] == hoop.draggable[0]) estado = true;
-          });
-        if (!estado)
-          $(this)
-            .data("data")
-            .elements.push(hoop.draggable);
+          .elements.push(hoop.draggable);
 
         let lastTower = hoop.draggable.data("data").lastTower;
         let elements = lastTower.data("data").elements;
@@ -177,18 +171,9 @@ function startGame(level) {
 
       let top = $(this).data("data").elements.length * 20;
       top = `calc(100% - ${top}px)`;
-      let left;
       let position = $(this).data("data").pos;
-      if (position == "center") {
-        left = 30 + dragValue;
-        left = `${left}vw`;
-      } else if (position == "left") {
-        left = 3 + dragValue;
-        left = `${left}vw`;
-      } else {
-        left = 56.7 + dragValue;
-        left = `${left}vw`;
-      }
+      let left = getHoopLeft(position, dragValue);
+
       hoop.draggable.css({
         left,
         top,

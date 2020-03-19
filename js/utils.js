@@ -9,6 +9,21 @@ export const getDraggableElements = limit => {
   return elements;
 }
 
+const leftValues = {
+  center: 30,
+  left: 3,
+  right: 56.7
+}
+
+export const getHoopLeft = (position, hoodValue) => `${leftValues[position] + hoodValue}vw`;
+
+export const showGameScreen = () => {
+  $("#game").css({
+    transform: "scale(1)",
+    "border-radius": 0
+  })
+}
+
 export const hideMainScreen = () => {
   $("#mainFace").css({
     transform: "scale(0)",
